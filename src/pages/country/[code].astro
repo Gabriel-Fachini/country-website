@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import { countryService } from '../../lib/api/countryService'
+import { formatPopulation } from '../../lib/utils'
+import { CountryDetail } from '../../components/CountryDetail'
+import { BorderCountries } from '../../components/BorderCountries'
+
+export async function getStaticPaths() {
+  const countries = await countryService.getAllCountries()
+  return countries.map(country => ({
+    params: { code: country.cca3 },
+    props: { country }
+  }))
+}
+
+const { country } = Astro.props
+---
+
+<Layout title={`${country.name.common} | Countries Explorer`}>
+  <!-- Back button -->
+  <div class="mb-6">
+    <a href="/" class="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+      </svg>
+      Back to All Countries
+    </a>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+    <div class="p-8">
+      <h1 class="text-3xl font-bold mb-2 text-gray-900">{country.name.common}</h1>
+      <p class="text-gray-600 mb-6">Explore details about {country.name.common}</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+    <!-- Flag and main content - takes up 3/5 of the grid -->
+    <div class="lg:col-span-3 space-y-8">
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="aspect-video w-full overflow-hidden">
+          <img 
+            src={country.flags.svg} 
+            alt={country.flags.alt || `Flag of ${country.name.common}`}
+            class="w-full h-full object-cover"
+          />
+        </div>
+        
+        <div class="p-6">
+          <h2 class="text-xl font-semibold mb-4">Flag of {country.name.common}</h2>
+          {country.flags.alt && (
+            <p class="text-gray-600 italic">"{country.flags.alt}"</p>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <!-- Details section - takes up 2/5 of the grid -->
+    <div class="lg:col-span-2">
+      <div class="bg-white rounded-xl shadow-md overflow-hidden p-6">
+        <CountryDetail country={country} client:load />
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional information section -->
+  <div class="mt-12 bg-gray-50 rounded-xl p-8 border border-gray-100">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">Country Statistics</h2>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center text-center">
+        <span class="text-3xl font-bold text-blue-600 mb-2">{formatPopulation(country.population)}</span>
+        <span class="text-gray-600">Population</span>
+      </div>
+      
+      <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center text-center">
+        <span class="text-3xl font-bold text-green-600 mb-2">{country.region}</span>
+        <span class="text-gray-600">Region</span>
+      </div>
+      
+      {country.capital && country.capital.length > 0 && (
+        <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center justify-center text-center">
+          <span class="text-3xl font-bold text-purple-600 mb-2">{country.capital[0]}</span>
+          <span class="text-gray-600">Capital</span>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Border countries section -->
+  <div class="mt-12 bg-white rounded-xl shadow-md overflow-hidden">
+    <div class="p-6">
+      <h2 class="text-xl font-semibold mb-6">Neighboring Countries</h2>
+      <BorderCountries borders={country.borders} client:load />
+    </div>
+  </div>
+</Layout> 
