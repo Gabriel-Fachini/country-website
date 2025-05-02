@@ -10,7 +10,7 @@ export function CountryCard({ country }: CountryCardProps) {
   return (
     <a 
       href={`/country/${country.cca3}`}
-      className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer block"
+      className="bg-card rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer block text-card-foreground"
     >
       <div className="h-40 overflow-hidden">
         <img 
@@ -23,7 +23,7 @@ export function CountryCard({ country }: CountryCardProps) {
       <div className="p-4">
         <h3 className="font-bold text-lg mb-2 truncate">{country.name.common}</h3>
         
-        <div className="space-y-1 text-sm text-gray-700">
+        <div className="space-y-1 text-sm text-muted-foreground">
           <p>
             <span className="font-medium">Region:</span> {country.region}
           </p>

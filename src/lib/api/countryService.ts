@@ -14,6 +14,19 @@ export interface Country {
   region: string
   population: number
   borders?: string[] // Country codes of bordering countries
+  area?: number
+  languages?: Record<string, string>
+  currencies?: Record<string, { name: string; symbol?: string }>
+  subregion?: string
+  latlng?: number[]
+  independent?: boolean
+  unMember?: boolean
+  landlocked?: boolean
+  timezones?: string[]
+  coatOfArms?: {
+    png?: string
+    svg?: string
+  }
 }
 
 // API service for fetching countries data
@@ -37,7 +50,7 @@ export const countryService = {
   // Get country details by code
   async getCountryByCode(code: string): Promise<Country | null> {
     try {
-      const response = await fetch(`https://restcountries.com/v3.1/alpha/${code}?fields=name,flags,capital,region,population,cca3,borders`)
+      const response = await fetch(`https://restcountries.com/v3.1/alpha/${code}?fields=name,flags,capital,region,population,cca3,borders,area,languages,currencies,subregion,latlng,independent,unMember,landlocked,timezones,coatOfArms`)
       
       if (!response.ok) {
         throw new Error(`Failed to fetch country: ${response.status}`)
@@ -57,7 +70,7 @@ export const countryService = {
     
     try {
       const codeList = codes.join(',')
-      const response = await fetch(`https://restcountries.com/v3.1/alpha?codes=${codeList}&fields=name,flags,cca3`)
+      const response = await fetch(`https://restcountries.com/v3.1/alpha?codes=${codeList}&fields=name,flags,cca3,capital,region`)
       
       if (!response.ok) {
         throw new Error(`Failed to fetch neighboring countries: ${response.status}`)

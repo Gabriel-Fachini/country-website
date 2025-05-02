@@ -2,8 +2,6 @@
 import '../styles/global.css';
 import Layout from '../layouts/Layout.astro'
 import { CountryGrid } from '../components/CountryGrid'
-// Component Imports
-import { Button } from "@/components/ui/button"
 
 // Full Astro Component Syntax:
 // https://docs.astro.build/basics/astro-components/
@@ -12,8 +10,8 @@ import { Button } from "@/components/ui/button"
 <Layout title="Countries Explorer | Discover the World">
 	<section>
 		<div class="mb-8">
-			<h2 class="text-2xl font-bold text-gray-800">Explore Countries Around the World</h2>
-			<p class="text-gray-600">Discover information about countries, their flags, populations, and more.</p>
+			<h2 class="text-2xl font-bold text-foreground">Explore Countries Around the World</h2>
+			<p class="text-muted-foreground">Discover information about countries, their flags, populations, and more.</p>
 		</div>
 		
 		<CountryGrid client:load />

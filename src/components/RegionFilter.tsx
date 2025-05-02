@@ -19,7 +19,7 @@ export function RegionFilter({ selectedRegion, onRegionChange }: RegionFilterPro
   return (
     <div className="w-full max-w-xs mb-8">
       <select
-        className="block w-full py-2.5 px-3 border border-gray-300 bg-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+        className="block w-full py-2.5 px-3 border border-border bg-input rounded-lg text-foreground focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
         value={selectedRegion}
         onChange={(e) => onRegionChange(e.target.value)}
       >
